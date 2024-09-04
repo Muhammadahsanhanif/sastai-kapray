@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { motion } from "framer-motion";
 
-function Productdetail() {
+function ProductDetail() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  
 
   useEffect(() => {
-    fetch(`https://fakestoreapi.com/products/${id}`)
+    fetch(`https://dummyjson.com/products/${id}`)
       .then((res) => res.json())
       .then((res) => setProduct(res));
   }, [id]);
@@ -26,7 +27,7 @@ function Productdetail() {
             <motion.img
               alt={product.title}
               className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded shadow-lg"
-              src={product.image}
+              src={product.thumbnail}  
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300 }}
             />
@@ -39,7 +40,7 @@ function Productdetail() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
               >
-                BRAND NAME
+                {product.brand} {/* Changed to product.brand */}
               </motion.h2>
               <motion.h1
                 className="text-gray-900 text-3xl title-font font-medium mb-1"
@@ -55,7 +56,7 @@ function Productdetail() {
                   {[...Array(5)].map((_, index) => (
                     <svg
                       key={index}
-                      fill={index < product.rating.rate ? "currentColor" : "none"}
+                      fill={index < Math.round(product.rating) ? "currentColor" : "none"}  
                       stroke="currentColor"
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -66,7 +67,7 @@ function Productdetail() {
                       <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                     </svg>
                   ))}
-                  <span className="text-gray-600 ml-3">{product.rating.count} Reviews</span>
+                  <span className="text-gray-600 ml-3">{product.stock} Reviews</span>
                 </span>
               </div>
               <motion.p
@@ -145,4 +146,4 @@ function Productdetail() {
   );
 }
 
-export default Productdetail;
+export default ProductDetail;

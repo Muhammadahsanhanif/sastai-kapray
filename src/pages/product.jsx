@@ -14,11 +14,11 @@ function Products() {
   }, []);
 
   const fetchProducts = () => {
-    fetch("https://fakestoreapi.com/products")
+    fetch("https://dummyjson.com/products")
       .then((res) => res.json())
-      .then((products) => {
-        setProducts(products);
-        const uniqueCategories = [...new Set(products.map((product) => product.category))];
+      .then((data) => {
+        setProducts(data.products); // Adjusted this line to use 'data.products'
+        const uniqueCategories = [...new Set(data.products.map((product) => product.category))];
         setCategories(uniqueCategories);
       });
   };
@@ -89,10 +89,11 @@ function Products() {
       <div className="flex flex-wrap -m-4">
         {filtered.map((data) => (
           <Link
+            key={data.id} // Ensure each Link has a unique key
             to={`/products/${data.title.split(" ").join("-")}/id/${data.id}`}
             className="w-full md:w-1/2 xl:w-1/3 p-4"
           >
-            <ProductCard id={data.id} title={data.title} key={data.id} image={data.image} price={data.price} />
+            <ProductCard id={data.id} title={data.title} image={data.thumbnail} price={data.price} />
           </Link>
         ))}
       </div>
